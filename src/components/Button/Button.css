@@ -1,0 +1,107 @@
+.btn-edit {
+    color: white;
+    width: 3rem;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #1976D2;
+    border: none;
+    font-size: 20px;
+}
+
+.btn-edit:hover{
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.btn-delete{
+    color: white;
+    width: 70px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #ff616f;
+    border: none;
+    font-size: 20px;
+    box-shadow: 5px 5px 15px #bdbdbd;
+}
+
+.btn-delete:hover{
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.btn-add {
+    color: white;
+    padding-right: 10px;
+    padding-left: 10px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #6598F6;
+    border: none;
+    font-size: 16px;
+}
+
+.btn-create {
+    color: white;
+    padding-right: 10px;
+    padding-left: 10px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #74E0C0;
+    border: none;
+    font-size: 16px;
+}
+
+.btn-add:hover{
+    cursor: pointer;
+    opacity: 0.8;
+ }
+
+    .btn-add:disabled {
+        padding-right: 10px;
+        padding-left: 10px;
+        height: 40px;
+        border-radius: 10px;
+        background-color: #CCCCCC;
+        border: none;
+        font-size: 16px;
+    }
+
+.btn-submit {
+    color: white;
+    padding-right: 10px;
+    padding-left: 10px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #1976D2;
+    border: none;
+    font-size: 16px;
+}
+
+.btn-submit:hover{
+    cursor: pointer;
+    opacity: 0.8;
+ }
+
+ .btn-cancels{
+    color: white;
+    height: 40px;
+    border-radius: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+    background-color: var(--colorBtnCancel);
+    border: none;
+    font-size: 16px;
+    
+}
+
+.btn-cancels:hover{
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.btn-submit:disabled{
+    background-color: #eee;
+    border: none;
+    font-size: 16px;
+}
+

@@ -1,0 +1,56 @@
+.header {
+  background-color: transparent;
+  padding: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.header:hover {
+  background-color: #f2f2f2;
+}
+
+.header.selected {
+  background-color: #7198ef;
+  color: white;
+}
+.กรอบเลือก {
+  height: 40px;
+  font-size: 16px;
+  margin-top: 10px;
+  width: 100%;
+  margin-bottom: 0;
+  height: 40px;
+  border-radius: 10px;
+  border: 0px solid white;
+  outline: none;
+  background-color: #dbe5fc;
+  padding-left: 6px;
+}
+
+.submit-button {
+  /* ปรับแต่งสไตล์ของปุ่ม Submit ตามที่คุณต้องการ */
+  background-color: #ffffff;
+  width: 110px;
+  color: #7198ef;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 2px solid #7198ef;
+  height: 30px;
+  text-align: center;
+  margin-top: 6px;
+  margin-left: 10px;
+}
+
+.submit-button:hover {
+  /* ปรับแต่งสไตล์เมื่อเมาส์ชี้ไปที่ปุ่ม Submit */
+  background-color: #98b9ff;
+  color: #ffffff;
+  border: 2px solid #98b9ff;
+}
+.submit-button-container {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+}

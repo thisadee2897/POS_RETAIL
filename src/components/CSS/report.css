@@ -1,0 +1,119 @@
+.textH {
+    font-size: 1vw;
+    text-align: center;
+    text-transform: uppercase;
+    margin-top:1%;
+    color: #0064B0;
+    font-weight: bold;
+}
+
+
+.textH_Left {
+    font-size: 24px;
+    text-align: left;
+    text-transform: uppercase;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    color: #2F3A9E;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.text {
+    font-size: 0.79vw;
+    text-align: center;
+    color: #838383;
+}
+
+.text_H {
+    font-size: 1vw;
+}
+
+.textH_tb {
+    font-size: 1vw;
+    text-align: center;
+    color: #0064B0;
+}
+.textH_tc {
+    font-size: 1vw;
+    text-align: center;
+
+}
+.text_tc {
+    font-size: 0.9vw;
+    text-align: center;
+}
+.text_tb {
+    font-size: 0.9vw;
+}
+
+.text_ts {
+    font-size: 0.7vw;
+    text-align: center;
+    color: black;
+}
+ 
+.text_ts_w {
+    font-size: 0.7vw;
+    text-align: center;
+    color: white;
+}
+
+.text_ts_b {
+    font-size: 0.7vw;
+    text-align: center;
+    color: black;
+}
+
+.bg_header {
+    width: 120%;
+    background: #0064B0;
+}
+.text_ts_left {
+    font-size: 0.7vw;
+    text-align: left;
+    padding-bottom:0px;
+}
+.text_ts_right {
+    font-size: 0.7vw;
+    text-align: right;
+    padding-bottom: 0px;
+}
+
+.text_left {
+    font-size: 1vw;
+    text-align: left;
+    padding-bottom: 0px;
+}
+
+.text_right {
+    font-size: 1vw;
+    text-align: right;
+    padding-bottom: 0px;
+}
+
+
+.text_tsH {
+    font-size: 0.7vw;
+    text-align: center;
+}
+
+.text_vertical {
+    font-size: 1.2vw;
+    writing-mode: vertical-rl;
+    color:white;
+}
+
+.default-options {
+    height: 20px;
+    color: #aaa;
+    font-weight: lighter;
+}
+.ths {
+    width: fit-content;
+    margin-top: 10px;
+    font-size: 15px;
+    font-weight: normal;
+    padding-right: 2px;
+
+}

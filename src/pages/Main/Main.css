@@ -1,0 +1,32 @@
+
+.main {
+    background-color: white;
+    display: flex;
+}
+
+.side-bar-content{
+  margin-bottom: 10rem;
+}
+
+.content-page {
+    overflow: auto;
+    height: 100vh;
+    width:100%;
+    margin-right:1%;
+    margin-bottom: 5%
+}
+
+.content-page_active {
+    overflow: auto;
+    height: 100vh;
+    width: 100%;
+    margin-bottom: 5%;
+    margin-right:1%;
+}
+
+.main_page {
+    overflow: auto;
+    background-color: white;
+    width: 100%;
+    display:flow-root;
+}

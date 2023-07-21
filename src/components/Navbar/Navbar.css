@@ -1,0 +1,58 @@
+.nav-bar {
+    font-size: 16px;
+    color: white;
+    padding-left: 10px;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background-color: #6598F6;
+    box-shadow: 5px 5px #F2F2F2;
+    height: 50px;
+    z-index: 0;
+}
+
+.dp_card {
+    z-index: 1;
+}
+
+.icon-menu {
+    width: 1rem;
+    color: #0064b0;
+    font-size: 1.5rem;
+}
+
+.icon-menu:hover {
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.exit-to-app {
+    font-weight: bold;
+    margin-right: 2rem;
+    color: #0064B0;
+}
+
+.exit-to-app:hover {
+    cursor: pointer;
+    opacity: 0.5;
+
+}
+
+.exit-to-app-sidebar-active {
+    font-weight: bold;
+    margin-right: 17rem;
+    color: #0064B0;
+}
+
+.exit-to-app-sidebar-active:hover {
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.nav-bar-option {
+    width: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}

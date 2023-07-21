@@ -1,0 +1,100 @@
+.text_sale {
+    font-size: 16px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    white-space: nowrap;
+}
+
+.text_cards {
+    margin-top: 5%;
+    color: #0064b0;
+}
+
+.btn_add_pay {
+    border-radius: 8px;
+    border-color: #1976D2;
+    background: #1976D2;
+    color: white;
+    margin-top: 13%;
+    width: 90%;
+    font-size: 16px;
+    height: 6vh;
+    border: none;
+}
+
+.btn_print_pay {
+    border-radius: 8px;
+    border-color: #1976D2;
+    background: #1976D2;
+    color: white;
+    margin-top: 8%;
+    width: 90%;
+    font-size: 16px;
+    height: 6vh;
+    border: none;
+}
+
+.card_pays {
+    margin-top: 15%;
+    width: 90%;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    height: 6vh;
+    border-style: solid;
+    border-color: #808B96;
+    padding-top: 8px;
+}
+
+.card_sale {
+    border:0px solid white;
+}
+
+.card_body_doc {
+    background: #F2F2F2;
+    border-radius: 10px;
+    margin-top:10px;
+}
+
+.card_head {
+    border-top: 0.3px solid #CCCCCC;
+    border-bottom: 0.3px solid #CCCCCC;
+    height: 40px;
+}
+
+.card_payvalue {
+    background: #FEFEFE;
+    border: 0.5px solid #666666;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.card_btn_pay {
+    text-align: center;
+    background: #FEFEFE;
+    border: 1px solid #CCCCCC;
+    border-radius: 10px;
+    height: 6vh;
+    color: #333333;
+}
+
+.input_pays{
+    margin-top: 14%;
+    height: 6vh;
+    font-size: 16px;
+    border-radius: 2px;  
+    width: 90%;
+    padding-left: 10px;
+    border: 1px;
+}
+.icon_date {
+    margin-left:50%;
+    background: #74E0C0;
+    border-radius: 10px;
+    height: 3.2vh;
+    position: absolute;
+    margin-top:10px;
+    width:50%
+}
+

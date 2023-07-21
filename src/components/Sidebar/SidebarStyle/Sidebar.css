@@ -1,0 +1,27 @@
+.nav-icon {
+    margin-left: 2rem;
+    font-size: 2rem;
+    height: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.side-bar {
+    background-color: #6598F6;
+    width: 280px;
+    box-shadow: 5px 0px 0px 0px grey;
+}
+
+.show-username {
+    padding-left: 1rem;
+    padding-top: 1rem;
+    padding-right: 1rem;
+    font-size: 1rem;
+    color: white;
+}
+
+.back-to-select-branch:hover {
+    cursor: pointer;
+    opacity: 0.5;
+}

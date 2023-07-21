@@ -1,0 +1,217 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@100;300&display=swap');
+
+:root {
+  --fontSizeHeader: 1.5rem;
+  --fontSizeTableHeader: 1rem;
+  --colorBtnAdd: #0064b0;
+  --colorBtnCancel: #0064b0;
+  --colorBtnEdit: #0064b0;
+}
+
+p.header{
+  font-size: 1.5rem;
+}
+
+table td{
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.header-data-table{
+  font-size: 1rem;
+  color: #0064B0;
+}
+
+.header-menu{
+  margin-top: 1%;
+  font-size: 1.2rem;
+  color: #0064B0;
+}
+
+.btn-group{
+  display: flex;
+}
+
+body {
+  overflow: hidden;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #7EA8F6;
+    border-radius: 5px;
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #7EA8F6;
+    }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.label-style{
+  font-family: 'Kanit';
+}
+.head-dialog {
+    height: 50px;
+    font-size: 14px;
+}
+
+.cancel {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-right: 12px;
+    border: none;
+    font-size: 25px;
+    background-color: white;
+}
+
+.text_h_dialog {
+    height: 40px;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top:12px;
+    margin-bottom:0;
+    width: fit-content;
+}
+.text_dialog {
+    height: 40px;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-bottom: 0
+}
+.input_dialog {
+    height: 40px;
+    font-size: 16px;
+    margin-top: 10px;
+    width: 100%;
+    margin-bottom: 0;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid white;
+    outline: none;
+    background-color: white;
+    padding-left: 6px;
+}
+
+input_dialog[type="text"]:disabled {
+    background: #eee;
+}
+
+.input_dialog:focus {
+    outline: none;
+    border: 1px solid #6598F6;
+    padding-left: 5px;
+}
+
+.inputselect_dialog {
+    margin-top: 10px;
+    margin-bottom: 0;
+    width: 100%;
+    height: 40px;
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+}
+
+.card_dialog {
+    border-radius: 2px;
+    border: 2px solid#E5E8E8;
+    margin-top: 10px;
+    height: 100%;
+}
+
+.card_welcome {
+    background: #7EA8F6;
+    border-radius: 0px 250px 0px 0px;
+    border: 0px 0px 0px 0px solid #7EA8F6;
+    border-color: #7EA8F6;
+    height: 100vh;
+}
+
+.card_login {
+    position: center;
+    background: #F2F2F2;
+    border-color: #F2F2F2;
+    border-radius: 50px;
+    height: 70vh;
+}
+
+.card_branch {
+    background: #E6E6E6;
+    border-radius: 0px 0px 0px 250px;
+    border-color: #E6E6E6;
+    border: 0px 0px 0px 0px solid #7EA8F6;
+    height: 100vh;
+}
+
+.card_branch_dt {
+    background: #D9D9D9;
+    border-radius: 20px;
+    border-color:  #E6E6E6;
+    height: 10vh;
+}
+
+.card_branch_logo {
+    background: white;
+    border-radius: 20px;
+    border: 0px 0px 0px 0px solid white;
+    height: 10.5vh;
+    text-align:center;
+}
+
+.line_col {
+    display: flex;
+    flex-direction: column;
+    line-height: 8vh;
+    color: #CCCCCC;
+}
+.text_card_dialog {
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 3px;
+    margin-left: 15px;
+    margin-bottom: 0;
+    color: #2F3A9E
+}
+
+.switch_dialog {
+    margin-top: 5px;
+    margin-bottom:0px;
+}
+
+.badge_active {
+    background-color:aqua
+}
+
+
+.border_right {
+    border-right: 0.3px solid #CCCCCC;
+    height: 200px;
+}
+

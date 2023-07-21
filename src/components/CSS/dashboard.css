@@ -1,0 +1,213 @@
+.mainBox {
+    display: flex;
+    justify-content: space-evenly
+}
+
+.contentBox {
+    display: inline;
+    height: 20vh;
+    width: 40vw;
+    border-radius: 10px;
+    box-shadow: 5px 5px 15px #4c847b;
+}
+
+.groupValue {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.textTitle {
+    color: #2F3A9E;
+    text-align: center;
+    word-wrap: normal;
+}
+
+.textValue {
+    color: #7EA8F6;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.textGrow {
+    color: #74E0C0;
+    text-align: center;
+    margin-right: 3px;
+}
+
+.valueBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    border-right: 2px solid #74E0C0;
+    padding-left: 5px;
+    max-height: 105px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.valueBoxSum {
+    background-color: #74E0C0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding-left: 5px;
+    margin-left: 5px;
+    width: 6.4vw;
+    height: 14vh;
+    max-height: 105px;
+    border-radius: 10px;
+}
+
+.textTitleSum {
+    color: #fff;
+    text-align: center;
+}
+
+.textValueSum {
+    color: #fff;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.textGrowSum {
+    color: #fff;
+    text-align: center;
+}
+
+.contentBoxCus {
+    height: 20vh;
+    width: 38vw;
+    border-radius: 10px;
+    box-shadow: 5px 5px 15px #634c84;
+    background-color: #634c84;
+    position: relative;
+}
+
+.customer {
+    background-color: #fff;
+    height: 20vh;
+    width: 35.5vw;
+    border-radius: 0px 10px 10px 0px;
+    margin-left: 30px;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.customer-text {
+    color: #fff;
+}
+
+#rotate-text {
+    transform: rotate(-90deg);
+    width: 30px;
+    position: absolute;
+    top: 55%;
+}
+
+.people-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 15vh;
+    height: 14vh;
+}
+
+.people-box1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-top: 15px;
+    width: 14vw;
+    height: 15vh;
+}
+
+.mainBox2 {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.contentBox2 {
+    height: 30vh;
+    width: 40vw;
+    border-radius: 10px;
+    box-shadow: 5px 5px 15px #717D7E;
+    position: relative;
+    display: block;
+}
+
+.contentBox2-chart {
+    margin-top: 15px;
+    margin-left: 15%;
+}
+
+.contentBoxCost {
+    height: 30vh;
+    width: 38vw;
+    border-radius: 10px;
+    box-shadow: 5px 5px 15px #f67280;
+    background-color: #f67280;
+    position: relative;
+}
+
+.cost {
+    background-color: #fff;
+    height: 30vh;
+    width: 35.5vw;
+    border-radius: 0px 10px 10px 0px;
+    margin-left: 30px;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.cost-a {
+    background-color: #fff;
+    height: 30vh;
+    width: 32vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    text-align: center;
+}
+
+.cost-b {
+    background-color: #fff;
+    height: 30vh;
+    width: 32vw;
+    border-radius: 0px 10px 10px 0px;
+    text-align: center;
+}
+
+.mainBox3 {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-evenly
+}
+
+.contentBox3 {
+    /* height: 20vh; */
+    /* width: 48%; */
+    border-radius: 10px;
+    box-shadow: 5px 5px 15px #717D7E;
+    position: relative;
+    display: block;
+}
+
+.card_dashboard {
+    border-radius: 30px;
+    border: 0px solid white;
+}
+
+.card_head_db {
+    border: 2px solid #CCCCCC;
+    padding: 10px;
+    border-top-left-radius: 50px 20px;
+}

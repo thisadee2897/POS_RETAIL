@@ -1,0 +1,40 @@
+.card_durations {
+    box-shadow: 0 0 0 0;
+    transition: 0.3s;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.card_durations_detail {
+    box-shadow: 2px 0 0 0 #D0D3D4;
+    width: 100%;
+    height: 16vh;
+    border-radius: 0px;
+}
+
+.card_durations_info {
+    width: 85%;
+    height: 16.5vh;
+    color: white;
+    background: #6598F6;
+    border-radius: 10px;
+    position: center;
+}
+
+.card_customer {
+    box-shadow: 0 0 0 0 0;
+    transition: 0.3s;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.text-netamnt {
+    display: flex;
+    flex-direction: column;
+    line-height: 2.7vh;
+}
+
+.card_durations-content {
+    display: flex;
+    justify-content: space-evenly;
+}

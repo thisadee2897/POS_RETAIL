@@ -1,0 +1,22 @@
+.container {
+    padding: 10px;
+    height: 650px;
+    width: 100%;
+    background-color: #fff;
+}
+.containervar {
+    padding: 10px;
+    width: 100%;
+    height: 1000px;
+    background-color: #fff;
+}
+.containerPie {
+    padding: 1px;
+    height: 500px;
+    width: 100%;
+    background-color: #fff;
+}
+.App {
+    font-family: sans-serif;
+    text-align: center;
+}
