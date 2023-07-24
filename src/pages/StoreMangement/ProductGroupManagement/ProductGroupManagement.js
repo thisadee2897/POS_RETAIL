@@ -11,7 +11,8 @@ import DataContext from "../../../DataContext/DataContext";
 import DataContextBranchData from "../../../DataContext/DataContextBranchData";
 import Switchstatus from "../../../components/SwitchStatus/Switchstatus";
 import HeaderPage from "../../../components/HeaderPage/HeaderPage";
-import DialogMaster from "./DialogMaster"
+import DialogMaster from "./DialogMaster";
+
 
 const ProductGroupManagement = () => {
     const userData = useContext(DataContext);
@@ -26,64 +27,108 @@ const ProductGroupManagement = () => {
     const [valueFilter, setValueFilter] = useState("")
     const [dataAdd, setDataAdd] = useState({})
     const [dataEdit, setDataEdit] = useState({})
-
-
+    const [DataCategory, setDataCategory] = useState([])
+    const defaultFormData = {
+        master_product_group_id: '',
+        master_product_group_name: '',
+        master_product_group_code: '',
+        master_product_group_name_eng: '',
+        master_product_category_id: '',
+        sale_active: true,
+    };
+    const [formData, setFormData] = useState(defaultFormData);
     const columnData = [
         {
             name: 'ลำดับ',
-            selector: (row, idx) => idx + 1,
+            selector: (row, idx) => row.row_num,
             sortable: false,
             width: '80px'
         },
         {
             name: 'หมวดสินค้า',
-            selector: row => row.master_shift_job_remark,
+            selector: row => {
+                const typeCategory = DataCategory.find(item => item.master_product_category_id === row.master_product_category_id);
+                if (typeCategory) {
+                    return typeCategory.master_product_category_name;
+                } else {
+                    return 'ถูกปิดการใช้งาน';
+                }
+            },
+            cell: row => {
+                const typeCategory = DataCategory.find(item => item.master_product_category_id === row.master_product_category_id);
+                if (!typeCategory) {
+                    return <span style={{ color: 'red', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>ถูกปิดการใช้งาน</span>;
+                }
+                return <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{typeCategory.master_product_category_name}</span>;
+            },
+            width: '200px',
+            left: true,
             sortable: true,
-            width: 'auto'
         },
         {
             name: 'รหัสหมวดสินค้า',
-            selector: row => row.master_shift_job_remark,
+            selector: row => row.master_product_group_code,
             sortable: true,
-            width: 'auto'
+            width: '200px',
+            center: "true"
         },
         {
             name: 'ชื่อหมวดสินค้า(TH)',
-            selector: row => row.master_shift_job_remark,
+            selector: row => row.master_product_group_name,
             sortable: true,
             width: 'auto'
         },
         {
             name: 'ชื่อหมวดสินค้า(EN)',
-            selector: row => row.master_shift_job_remark,
+            selector: row => row.master_product_group_name_eng,
             sortable: true,
             width: 'auto'
 
         },
         {
             name: 'สถานะการใช้งาน',
-            selector: row => <Switchstatus value={row.master_shift_job_last_day_active} />,
+            selector: row => <Switchstatus value={row.sale_active} />,
             sortable: true,
-            width: 'auto'
+            width: '160px',
+            center: "true"
         },
         {
             name: 'แก้ไข',
             selector: (row, idx) => <BtnEdit onClick={() => onClickEdit(row, idx)} />,
             right: true,
-            width: '50px'
+            width: '90px',
+            center: "true"
         },
     ]
 
     useEffect(() => {
-        getDataShiftSeeting()
+        getProductGroup()
     }, [])
+    useEffect(() => {
+        const getDataCategoryManagement = async () => {
+            try {
+                const dataApi = {
+                    "company_id": companyId,
+                    "branch_id": branchId,
+                };
+                const response = await axios.post(UrlApi() + 'get_category_product_management', dataApi);
+                if (response.data) {
+                    const modifiedData = response.data.filter(item => item.master_product_category_active === true).map((item, idx) => ({ ...item, row_num: idx + 1 }));
+                    setDataCategory(modifiedData);
+                }
+                console.log(response.data);
+            } catch (error) {
+                console.error("Error while fetching data:", error);
+            }
+        };
+        getDataCategoryManagement();
+    }, []);
 
-    const getDataShiftSeeting = () => {
+    const getProductGroup = () => {
         const dataApi = {
-            "company_id": companyId,
-            "branch_id": branchId
+            "company_id": companyId
         }
-        axios.post(UrlApi() + 'get_shift_data', dataApi).then((res) => {
+        axios.post(UrlApi() + 'get_product_group_management', dataApi).then((res) => {
             if (res.data) {
                 res.data.map((item, idx) => { item.row_num = idx + 1 })
                 setDataShiftSetting(res.data)
@@ -103,30 +148,32 @@ const ProductGroupManagement = () => {
     }
 
     const onClickSave = (data) => {
-        if (!data.master_shift_job_id && data.master_shift_job_name) {
+        console.log(data)
+        if (!data.master_product_group_id && data.master_product_group_name) {
             data.company_id = parseInt(companyId)
-            data.branch_id = parseInt(branchId)
-            data.master_shift_job_remark = data.master_shift_job_remark ? data.master_shift_job_remark : ""
-            data.master_shift_job_empsave_id = userData[0].emp_employeemasterid
-            data.master_shift_job_last_day_active = data.master_shift_job_last_day_active ? data.master_shift_job_last_day_active : true
-            data.master_shift_job_active = data.master_shift_job_active ? data.master_shift_job_active : true
-            axios.post(UrlApi() + 'add_shift_data', data).then((res) => {
+            data.master_product_category_id = data.master_product_category_id ? data.master_product_category_id : ""
+            data.master_product_group_code = data.master_product_group_code ? data.master_product_group_code : ""
+            data.master_product_group_name = data.master_product_group_name ? data.master_product_group_name : ""
+            data.master_product_group_name_eng = data.master_product_group_name_eng ? data.master_product_group_name_eng : ""
+            data.sale_active = data.sale_active ? data.sale_active : true
+            axios.post(UrlApi() + 'add_product_group_management', data).then((res) => {
                 if (res.data) {
                     setAlertSuccess(true);
-                    setAlertMessages("เพิ่มข้อมูลสำเร็จ")
-                    setOpenDialog(false)
-                    getDataShiftSeeting()
+                    setAlertMessages("เพิ่มข้อมูลสำเร็จ");
+                    setOpenDialog(false);
+                    getProductGroup();
+                    setFormData(defaultFormData);
                 }
             })
-        } else if (data.master_shift_job_id && data.master_shift_job_name) {
-            data.branch_id = parseInt(data.master_shift_job_branch_id)
+        } else if (data.master_product_group_id && data.master_product_group_name) {
             data.company_id = parseInt(data.master_company_id)
-            axios.post(UrlApi() + 'update_shift_data', data).then((res) => {
+            axios.post(UrlApi() + 'update_product_group_management', data).then((res) => {
                 if (res.data) {
                     setAlertSuccess(true);
-                    setAlertMessages("แก้ไขข้อมูลสำเร็จ")
-                    setOpenDialog(false)
-                    getDataShiftSeeting()
+                    setAlertMessages("แก้ไขข้อมูลสำเร็จ");
+                    setOpenDialog(false);
+                    getProductGroup();
+                    setFormData(defaultFormData);
                 }
             })
         }
@@ -138,11 +185,16 @@ const ProductGroupManagement = () => {
 
 
     const columnDialog = [
-        { name: 'หมวดสินค้า', type: "dropdown", key: "master_shift_job_name", validate: true },
-        { name: 'รหัสหมวดสินค้า', type: "input_text", key: "master_shift_job_name", validate: true },
-        { name: 'ชื่อหมวดสินค้า(TH)', type: "input_text", key: "master_shift_job_remark" },
-        { name: 'ชื่อหมวดสินค้า(EN)', type: "input_text", key: "master_shift_job_remark" },
-        { name: 'สถานะการใช้งาน', type: "switch_status", key: "master_shift_job_last_day_active" },
+        {
+            name: 'หมวดสินค้า', type: "dropdown", key: "master_product_category_id", validate: true,
+            value_key: "master_product_category_name",
+            id_key: "master_product_category_id",
+            option: DataCategory
+        },
+        { name: 'รหัสหมวดสินค้า', type: "input_text", key: "master_product_group_code", validate: true },
+        { name: 'ชื่อหมวดสินค้า(TH)', type: "input_text", key: "master_product_group_name" },
+        { name: 'ชื่อหมวดสินค้า(EN)', type: "input_text", key: "master_product_group_name_eng" },
+        { name: 'สถานะการใช้งาน', type: "switch_status", key: "sale_active" },
     ]
 
 
@@ -150,7 +202,7 @@ const ProductGroupManagement = () => {
     const getDialog = () => {
         return (
             <DialogMaster
-                keys="master_shift_job_id"
+                keys="master_product_group_id"
                 openDialog={openDialog}
                 onClose={(e) => setOpenDialog(e)}
                 columnDialog={columnDialog}
@@ -172,7 +224,7 @@ const ProductGroupManagement = () => {
             }
         } else {
             setValueFilter("")
-            getDataShiftSeeting()
+            getProductGroup()
         }
     }
 
@@ -183,10 +235,17 @@ const ProductGroupManagement = () => {
 
     const columnExport = [
         { "header": "ลำดับ", "selector": "row_num" },
-        { "header": "รอบการขาย", "selector": "master_shift_job_name" },
-        { "header": "หมายเหตุ", "selector": "master_shift_job_remark" },
-        { "header": "รอบการขายสุดท้ายของวัน", "selector": "master_shift_job_last_day_active_name" },
-        { "header": "สถานะการใช้งาน", "selector": "master_shift_job_active_name" },
+        {
+            "header": "หมวดสินค้า",
+            "selector": (row) => {
+                const typeCategory = DataCategory.find(item => item.master_product_category_id === row.master_product_category_id);
+                return typeCategory ? typeCategory.master_product_category_name : 'ถูกปิดการใช้งาน';
+            }
+        },
+        { "header": "รหัสหมวดสินค้า", "selector": "master_product_group_code" },
+        { "header": "ชื่อหมวดสินค้าTH", "selector": "master_product_group_name" },
+        { "header": "ชื่อหมวดสินค้าEN", "selector": "master_product_group_name_eng" },
+        { "header": "สถานะการใช้งาน", "selector": "sale_active" },
     ];
 
     return (<>

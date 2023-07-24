@@ -46,13 +46,13 @@ router.post('/update_category_product_management', (req, res) => {
 
 //product_group_management
 router.post('/get_product_group_management', (req, res) => {
-    data_models.getShiftdata(req, res);
+    data_models.getProductGroupManagement(req, res);
 });
 router.post('/add_product_group_management', (req, res) => {
-    data_models.addTypeProductManagement(req, res);
+    data_models.addProductGroupManagement(req, res);
 });
 router.post('/update_product_group_management', (req, res) => {
-    data_models.updateTypeProductManagement(req, res);
+    data_models.updateProductGroupManagement(req, res);
 });
 
 //product_unit_management

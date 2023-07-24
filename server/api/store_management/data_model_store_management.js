@@ -299,6 +299,73 @@ class ModelStoreManagement {
         );
     }
 
+    getProductGroupManagement(req, res) {
+        const company_id = req.body.company_id;
+        pool.query(`select * from master_data.fn_get_product_group(${company_id})`,
+            (err, result) => {
+                if (err) {
+                    console.error(err);
+                    res.status(500).json(err);
+                    throw err;
+                }
+                res.status(200).json(result.rows);
+            }
+        );
+    }
+    addProductGroupManagement(req, res) {
+        const company_id = req.body.company_id;
+        const ategory_id = req.body.master_product_category_id;
+        const code = req.body.master_product_group_code;
+        const name = req.body.master_product_group_name;
+        const name_neg = req.body.master_product_group_name_eng;
+        const active = req.body.sale_active;
+        console.log(req.body)
+        const query = {
+            text: 'SELECT master_data.fn_add_product_group($1, $2, $3, $4, $5, $6)',
+            values: [company_id, ategory_id, code, name, name_neg, active],
+        };
+        pool.query(query, (err, result) => {
+            if (err) {
+                console.error(err);
+                res.status(500).json(err);
+                throw err;
+            }
+            // console.log(result.rows);
+            res.status(200).json(result.rows);
+        });
+    }
+    updateProductGroupManagement(req, res) {
+        const company_id = req.body.company_id;
+        const ategory_id = req.body.master_product_category_id;
+        const code = req.body.master_product_group_code;
+        const name = req.body.master_product_group_name;
+        const name_neg = req.body.master_product_group_name_eng;
+        const active = req.body.sale_active;
+        const group_id = req.body.master_product_group_id;
+        console.log(req.body);
+
+        pool.query(
+            `UPDATE master_data.master_product_group
+            SET
+            master_company_id = $1,
+            master_product_category_id = $2,
+            master_product_group_code = $3,
+            master_product_group_name = $4,
+            master_product_group_name_eng = $5,
+            sale_active = $6
+            WHERE
+            master_product_group_id = $7;`,
+            [company_id, ategory_id, code, name, name_neg, active, group_id],
+            (err, result) => {
+                if (err) {
+                    console.error(err);
+                    res.status(500).json(err);
+                } else {
+                    res.json({ message: 1 });
+                }
+            }
+        );
+    }
 
 }
 module.exports = ModelStoreManagement;

@@ -32,16 +32,30 @@ const CategoryProductManagement = () => {
     const columnData = [
         {
             name: 'ลำดับ',
-            selector: (row, idx) => idx + 1,
+            selector: (row, idx) => row.row_num,
             sortable: false,
             width: '80px'
         },
         {
             name: 'ประเภทสินค้า',
-            selector: row => typeProductManagement.find(item => item.master_product_type_id === row.master_product_type_id)?.master_product_type_name || '',
-            sortable: true,
+            selector: row => {
+                const typeProduct = typeProductManagement.find(item => item.master_product_type_id === row.master_product_type_id);
+                if (typeProduct) {
+                    return typeProduct.master_product_type_name;
+                } else {
+                    return 'ถูกปิดการใช้งาน';
+                }
+            },
+            cell: row => {
+                const typeProduct = typeProductManagement.find(item => item.master_product_type_id === row.master_product_type_id);
+                if (!typeProduct) {
+                    return <span style={{ color: 'red', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>ถูกปิดการใช้งาน</span>;
+                }
+                return <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{typeProduct.master_product_type_name}</span>;
+            },
             width: '200px',
-            center: "true"
+            left: true,
+            sortable: true,
         },
         {
             name: 'รหัสหมวดสินค้า',
