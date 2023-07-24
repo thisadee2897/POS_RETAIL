@@ -299,6 +299,8 @@ class ModelStoreManagement {
         );
     }
 
+
+
     getProductGroupManagement(req, res) {
         const company_id = req.body.company_id;
         pool.query(`select * from master_data.fn_get_product_group(${company_id})`,
@@ -366,6 +368,68 @@ class ModelStoreManagement {
             }
         );
     }
+
+
+
+
+    getProductUnitManagement(req, res) {
+        const company_id = req.body.company_id;
+        pool.query(`SELECT * FROM master_data.fn_get_product_unit(${company_id})`,
+            (err, result) => {
+                if (err) {
+                    console.error(err);
+                    res.status(500).json(err);
+                    throw err;
+                }
+                res.status(200).json(result.rows);
+            }
+        );
+    }
+    addProductUnitManagement(req, res) {
+        const company_id = req.body.company_id;
+        const name = req.body.master_product_unit_name;
+        const name_eng = req.body.master_product_unit_name_eng;
+        const active = req.body.master_product_unit_active;
+        console.log(req.body)
+        const query = {
+            text: 'SELECT master_data.fn_add_product_unit($1, $2, $3, $4)',
+            values: [company_id,  name, name_eng, active],
+        };
+        pool.query(query, (err, result) => {
+            if (err) {
+                console.error(err);
+                res.status(500).json(err);
+                throw err;
+            }
+            res.status(200).json(result.rows);
+        });
+    }
+    updateProductUnitManagement(req, res) {
+        const unit_id = req.body.master_product_unit_id;
+        const name = req.body.master_product_unit_name;
+        const name_eng = req.body.master_product_unit_name_eng;
+        const active = req.body.master_product_unit_active;
+        console.log(req.body);
+        pool.query(
+            `UPDATE master_data.master_product_unit
+            SET
+            master_product_unit_name = $1,
+            master_product_unit_name_eng = $2,
+            master_product_unit_active = $3
+            WHERE
+            master_product_unit_id = $4;`,
+            [name, name_eng, active, unit_id],
+            (err, result) => {
+                if (err) {
+                    console.error(err);
+                    res.status(500).json(err);
+                } else {
+                    res.json({ message: 1 });
+                }
+            }
+        );
+    }
+
 
 }
 module.exports = ModelStoreManagement;
