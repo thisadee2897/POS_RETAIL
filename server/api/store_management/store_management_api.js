@@ -68,13 +68,13 @@ router.post('/update_product_unit_management', (req, res) => {
 
 //product_brand_management
 router.post('/get_product_brand_management', (req, res) => {
-    data_models.getShiftdata(req, res);
+    data_models.getBrandManagement(req, res);
 });
 router.post('/add_product_brand_management', (req, res) => {
-    data_models.addTypeProductManagement(req, res);
+    data_models.addBrandManagement(req, res);
 });
 router.post('/update_product_brand_management', (req, res) => {
-    data_models.updateTypeProductManagement(req, res);
+    data_models.updateBrandManagement(req, res);
 });
 
 //product_management

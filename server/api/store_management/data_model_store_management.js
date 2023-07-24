@@ -393,7 +393,7 @@ class ModelStoreManagement {
         console.log(req.body)
         const query = {
             text: 'SELECT master_data.fn_add_product_unit($1, $2, $3, $4)',
-            values: [company_id,  name, name_eng, active],
+            values: [company_id, name, name_eng, active],
         };
         pool.query(query, (err, result) => {
             if (err) {
@@ -430,6 +430,63 @@ class ModelStoreManagement {
         );
     }
 
+
+    getBrandManagement(req, res) {
+        const company_id = req.body.company_id;
+        pool.query(`SELECT * FROM master_data.fn_get_product_brand(${company_id})`,
+            (err, result) => {
+                if (err) {
+                    console.error(err);
+                    res.status(500).json(err);
+                    throw err;
+                }
+                res.status(200).json(result.rows);
+            }
+        );
+    }
+
+    addBrandManagement(req, res) {
+        const company_id = req.body.company_id;
+        const name = req.body.master_product_brand_name;
+        const active = req.body.master_product_brand_active;
+        console.log(req.body);
+        const query = {
+            text: 'SELECT master_data.fn_add_product_brand($1, $2, $3)',
+            values: [company_id, name, active],
+        };
+        pool.query(query, (err, result) => {
+            if (err) {
+                console.error(err);
+                res.status(500).json(err);
+                throw err;
+            }
+            res.status(200).json(result.rows);
+        });
+    }
+
+    updateBrandManagement(req, res) {
+        const name = req.body.master_product_brand_name;
+        const active = req.body.master_product_brand_active;
+        const brand_id = req.body.master_product_brand_id;
+        console.log(req.body);
+        pool.query(
+            `UPDATE master_data.master_product_brand
+            SET
+            master_product_brand_name = $1,
+            master_product_brand_active = $2
+            WHERE
+            master_product_brand_id = $3;`,
+            [name ,active,brand_id],
+            (err, result) => {
+                if (err) {
+                    console.error(err);
+                    res.status(500).json(err);
+                } else {
+                    res.json({ message: 1 });
+                }
+            }
+        );
+    }
 
 }
 module.exports = ModelStoreManagement;
