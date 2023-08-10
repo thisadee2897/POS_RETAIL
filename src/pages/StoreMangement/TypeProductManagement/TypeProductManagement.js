@@ -68,8 +68,7 @@ const TypeProductManagement = () => {
 
     const getTypeProductManagement = () => {
         const dataApi = {
-            "company_id": companyId,
-            "branch_id": branchId,
+            "company_id": companyId
         }
         axios.post(UrlApi() + 'get_type_product_management', dataApi).then((res) => {
             if (res.data) {

@@ -175,7 +175,6 @@ const CategoryProductManagement = () => {
             try {
                 const dataApi = {
                     "company_id": companyId,
-                    "branch_id": branchId,
                 };
                 const response = await axios.post(UrlApi() + 'get_type_product_management', dataApi);
                 if (response.data) {

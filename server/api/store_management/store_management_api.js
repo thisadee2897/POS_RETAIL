@@ -79,13 +79,34 @@ router.post('/update_product_brand_management', (req, res) => {
 
 //product_management
 router.post('/get_product_management', (req, res) => {
-    data_models.getShiftdata(req, res);
+    data_models.getProductManagement(req, res);
 });
 router.post('/add_product_management', (req, res) => {
-    data_models.addTypeProductManagement(req, res);
+    data_models.addProductManagement(req, res);
 });
 router.post('/update_product_management', (req, res) => {
-    data_models.updateTypeProductManagement(req, res);
+    data_models.updateProductManagement(req, res);
+});
+//get_product_data
+router.post('/get_master_data', (req, res) => {
+    data_models.getProductData(req, res);
+});
+
+//get_category_product_management_active
+router.post('/get_category_product_management_active', (req, res) => {
+    data_models.getCategoryProductManagementActive(req, res);
+});
+//get_product_group_active
+router.post('/get_product_group_active', (req, res) => {
+    data_models.getProductGroupActive(req, res);
+});
+//get_brand
+router.post('/get_master_product_brand', (req, res) => {
+    data_models.getBrand(req, res);
+});
+//get_vat_group
+router.post('/get_vat_group', (req, res) => {
+    data_models.getVatGroup(req, res);
 });
 
 module.exports = router;

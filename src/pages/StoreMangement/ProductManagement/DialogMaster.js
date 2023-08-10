@@ -11,8 +11,6 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
-    FormControlLabel,
-    Checkbox,
 } from "@mui/material";
 import _ from "lodash";
 import "../../../components/CSS/report.css";
@@ -21,15 +19,10 @@ import Btnsubmit from "../../../components/Button/BtnSubmit";
 import BtnCancleDoc from "../../../components/Button/BtnCancelDoc";
 import BtnCloseDoc from "../../../components/Button/BtnCloseDoc";
 import SwitchStatusactive from "../../../components/SwitchStatus/SwitchStatusactive";
-import SelectDate from "../../../components/DatePicker/DatePicker";
 import Select from "../../../components/Input/InputSelect";
-import SelectAuto from "../../../components/Input/InputSelectAuto";
 import DataContextMenuActions from "../../../DataContext/DataContextMenuActions";
-import InputTime from "../../../components/TimePicker/InputTime";
 import Card from "react-bootstrap/Card";
-import Moment from "moment";
 import AlertWarning from "../../../components/Alert/AlertWarning";
-import { Image } from 'semantic-ui-react'
 
 const DialogMaster = ({
     openDialog,
@@ -42,7 +35,6 @@ const DialogMaster = ({
     closeDoc,
     width,
     col,
-    uploadImage,
     onChangeDialog,
     textValidates,
     columnDialog,
@@ -53,14 +45,16 @@ const DialogMaster = ({
     alertMessages,
     promoTionMaster,
     customBtnTB,
+    img,
+    DetailData,
+    status
 }) => {
     const actions = useContext(DataContextMenuActions);
     const [textValidate, setTextValidate] = useState({});
     const [valueDialog, setValueDialog] = useState("");
     const [pageName, setPageName] = useState("");
-    const [img, setImg] = useState(null);
-
-
+    const [DialogselectedImage, setDialogSelectedImage] = useState("");
+    const [Detail, setContentDetailData] = useState("");
     useEffect(() => {
         if (actions) {
             let name = actions.length > 0 ? actions[0]["menuName"] : "";
@@ -69,8 +63,7 @@ const DialogMaster = ({
     }, [actions]);
 
     useEffect(() => {
-        getDialog();
-    }, [valueDialog, columnDialog]);
+    }, [valueDialog, columnDialog, DialogselectedImage, Detail]);
 
     useEffect(() => {
         if (textValidates && textValidates.key) {
@@ -86,22 +79,6 @@ const DialogMaster = ({
             dataAdd[key] = e.target.value;
         }
     };
-
-    const onChangeInputNum = (e, key, item) => {
-        if (e.target.value < 0) {
-            textValidate.key = key;
-            textValidate.message = "มูลค่าต้องมากกว่า 0";
-            setValueDialog(key);
-        } else {
-            setTextValidate({});
-            if (dataEdit[keys] != undefined) {
-                dataEdit[key] = e.target.value ? parseFloat(e.target.value) : "";
-            } else {
-                dataAdd[key] = e.target.value ? parseFloat(e.target.value) : "";
-            }
-        }
-    };
-
     const onChangeInputSwitch = (e, key) => {
         setTextValidate({});
         if (dataEdit[keys] != undefined) {
@@ -110,7 +87,6 @@ const DialogMaster = ({
             dataAdd[key] = e;
         }
     };
-
     const onClickSelect = (e, key, item) => {
         setTextValidate({});
         if (item.release && e.target.value) {
@@ -144,16 +120,6 @@ const DialogMaster = ({
             }
         }
     };
-
-    const onChangeDate = (date, key) => {
-        setTextValidate({});
-        if (dataEdit[keys] != undefined) {
-            dataEdit[key] = date;
-        } else {
-            dataAdd[key] = date;
-        }
-    };
-
     const onClickSave = () => {
         columnDialog.map((item, idx) => {
             if (item.validate && !item.defaultvalue) {
@@ -178,76 +144,16 @@ const DialogMaster = ({
         if (!textValidate.key) {
             setTextValidate({});
             if (dataEdit[keys] != undefined) {
-                onChangeDialog(dataEdit);
+                onChangeDialog(dataEdit, DialogselectedImage, Detail);
+
             } else {
-                onChangeDialog(dataAdd);
+                onChangeDialog(dataAdd, DialogselectedImage, Detail);
             }
         }
     };
-
     const onClickCancleDoc = () => {
         onChangeDialog(dataEdit);
     };
-
-    const OnchangeCheck = (e, key) => {
-        if (dataEdit[keys] != undefined) {
-            dataEdit[key] = e.target.checked;
-        } else {
-            dataAdd[key] = e.target.checked;
-        }
-        setValueDialog(e);
-    };
-
-    const OnchangeCheckbox = (e, item, idx, key) => {
-        setTextValidate({});
-        let valueChecked = [];
-        if (dataEdit[keys] != undefined) {
-            valueChecked = dataEdit[key] = dataEdit[key] ? dataEdit[key] : [];
-        } else {
-            valueChecked = dataAdd[key] = dataAdd[key] ? dataAdd[key] : [];
-        }
-        if (e.target.value == 0) {
-            valueChecked = [];
-            let findData = _.findIndex(columnDialog, { key: key });
-            columnDialog[findData].data.map((itemDt, idxDT) => {
-                itemDt.value_checked = e.target.checked;
-                if (e.target.checked == true && e.target.value > 0) {
-                    valueChecked.push(itemDt[key]);
-                } else {
-                    valueChecked = [];
-                }
-            });
-            setValueDialog(e);
-        } else {
-            item.value_checked = e.target.checked;
-            setValueDialog(e);
-            valueChecked.push(e.target.value);
-        }
-        if (dataEdit[keys] != undefined) {
-            dataEdit[key] = valueChecked;
-        } else {
-            dataAdd[key] = valueChecked;
-        }
-    };
-
-    const getUploadImage = () => {
-        return (
-            <>
-                {uploadImage ? (
-                    <img
-                        style={{ marginLeft: "40%" }}
-                        src={img}
-                        alt=""
-                        width={120}
-                        height={120}
-                    />
-                ) : (
-                    <></>
-                )}
-            </>
-        );
-    };
-
     const getTextValidate = (key, validate) => {
         return (
             <>
@@ -263,23 +169,7 @@ const DialogMaster = ({
             </>
         );
     };
-
     const getDialogContent = (type, key, validate, item) => {
-        if (type == "text") {
-            return (
-                <>
-                    <p className="text_dialog">
-                        {dataEdit[key] != undefined
-                            ? dataEdit[key]
-                            : dataAdd[key] != undefined
-                                ? dataAdd[key]
-                                : item.defaultvalue
-                                    ? item.defaultvalue
-                                    : ""}
-                    </p>
-                </>
-            );
-        }
         if (type == "input_text") {
             return (
                 <>
@@ -290,29 +180,6 @@ const DialogMaster = ({
                         type="text"
                         defaultValue={dataEdit[key] ? dataEdit[key] : ""}
                         onChange={(e) => onChangeInput(e, key, item)}
-                    />
-                    {getTextValidate(key, validate)}
-                </>
-            );
-        }
-        if (type == "input_num") {
-            return (
-                <>
-                    <InputText
-                        className="input_dialog"
-                        type="num"
-                        disabled={item.disabled}
-                        style={{ width: item.width ? item.width : "100%" }}
-                        value={
-                            dataEdit[key] != undefined
-                                ? dataEdit[key]
-                                : dataAdd[key] != undefined
-                                    ? dataAdd[key]
-                                    : item.defaultvalue
-                                        ? item.defaultvalue
-                                        : ""
-                        }
-                        onChange={(e) => onChangeInputNum(e, key, item)}
                     />
                     {getTextValidate(key, validate)}
                 </>
@@ -360,167 +227,18 @@ const DialogMaster = ({
                 </>
             );
         }
-        if (type == "dropdown_auto") {
+        if (type == "switch_status") {
             return (
                 <>
-                    <SelectAuto
-                        style={{
-                            marginTop: "10px",
-                            width: "100%",
-                            borderColor: "white",
-                            borderRadius: "10px",
-                        }}
-                        disabled={item.disabled}
-                        value={
-                            dataEdit[key] != undefined
-                                ? dataEdit[key]
-                                : dataAdd[key] != undefined
-                                    ? dataAdd[key]
-                                    : 0
-                        }
-                        option={item.option && item.option.length > 0 ? item.option : []}
-                        value_key={item.value_key}
-                        id_key={key}
-                        onChange={(e) => onClickSelect(e, key, item)}
+                    <SwitchStatusactive
+                        defaultChecked={dataEdit[key] != undefined ? dataEdit[key] : true}
+                        onChange={(e) => onChangeInputSwitch(e, key, item)}
                     />
                     {getTextValidate(key, validate)}
                 </>
             );
-        }
-        if (type == "select_date") {
-            return (
-                <>
-                    <SelectDate
-                        style={{
-                            marginTop: "10px",
-                            width: "100%",
-                            background: "white",
-                            borderColor: "white",
-                        }}
-                        value={
-                            dataEdit[key] != undefined
-                                ? dataEdit[key]
-                                : dataAdd[key] != undefined
-                                    ? dataAdd[key]
-                                    : item.defaultvalue == null
-                                        ? item.defaultvalue
-                                        : new Date()
-                        }
-                        onChange={(date) => onChangeDate(date, key)}
-                    />
-                    {getTextValidate(key, validate)}
-                </>
-            );
-        }
-        if (type == "select_time") {
-            return (
-                <>
-                    <InputTime
-                        style={{ marginTop: "10px", width: "100%", background: "white" }}
-                        value={
-                            dataEdit[key] != undefined
-                                ? dataEdit[key]
-                                : dataAdd[key] != undefined
-                                    ? dataAdd[key]
-                                    : "00:01"
-                        }
-                        defaulValue={item.defaultvalue ? item.defaultvalue : "23:59"}
-                        onChange={(date) => onChangeDate(date, key)}
-                    />
-                    {getTextValidate(key, validate)}
-                </>
-            );
-        }
-        if (type == "text_date") {
-            return (
-                <>
-                    <p className="text_dialog">
-                        {" "}
-                        {Moment(new Date()).format("DD/MM/") +
-                            (parseInt(Moment(new Date()).format("YYYY")) + 543)}{" "}
-                    </p>
-                </>
-            );
-        }
-        if (type == "text_time") {
-            return (
-                <>
-                    {" "}
-                    <p className="text_dialog">
-                        {" "}
-                        {Moment(new Date()).format("hh:mm:ss")}{" "}
-                    </p>
-                </>
-            );
-        }
-        if (type == "check") {
-            return (
-                <>
-                    {" "}
-                    <FormControlLabel
-                        style={{ color: "black", marginTop: "15px" }}
-                        control={
-                            <Checkbox
-                                style={{ color: "#FEAE5F" }}
-                                value={key}
-                                onClick={(e) => {
-                                    OnchangeCheck(e, key);
-                                }}
-                            />
-                        }
-                        label={<span style={{ fontSize: "16px" }}> {item.label}</span>}
-                    />
-                </>
-            );
-        }
-        if (type == "check_box") {
-            return (
-                <>
-                    <div class="row">
-                        {item.data.map((items, idxs) => {
-                            return (
-                                <>
-                                    <div class="col-4">
-                                        {" "}
-                                        <FormControlLabel
-                                            style={{ color: "black" }}
-                                            control={
-                                                <Checkbox
-                                                    style={{ color: "#FEAE5F" }}
-                                                    value={items[key]}
-                                                    defaultChecked={
-                                                        items.value_checked ? items.value_checked : false
-                                                    }
-                                                    checked={
-                                                        items.value_checked ? items.value_checked : false
-                                                    }
-                                                    disabled={item.disabled}
-                                                    onClick={(e) => {
-                                                        OnchangeCheckbox(e, items, idxs, key);
-                                                    }}
-                                                />
-                                            }
-                                            label={
-                                                <span style={{ fontSize: "16px" }}>
-                                                    {" "}
-                                                    {items[item.value_key]}
-                                                </span>
-                                            }
-                                        />
-                                    </div>
-                                </>
-                            );
-                        })}
-                        {getTextValidate(key, validate)}
-                    </div>
-                </>
-            );
-        }
-        if (item.custom) {
-            return <>{item.custom}</>;
         }
     };
-
     const getCardBody = (data, col) => {
         return (
             <>
@@ -615,7 +333,6 @@ const DialogMaster = ({
             </>
         );
     };
-
     const getCardForm = () => {
         let groupColumn = _.groupBy(columnDialog, "groups");
         return (
@@ -623,189 +340,118 @@ const DialogMaster = ({
                 <div class="row">
                     {colcards.map((item, idx) => {
                         return (
-                            <>
-                                <div class={item.colsgroup ? item.colsgroup : "col-12"}>
-                                    <Card className="card_sale">
-                                        <Card.Body className="card_body_doc">
-                                            <p
-                                                className="text_card_dialog"
-                                                style={{ color: "#7EA8F6", fontSize: "20px" }}
-                                            >
-                                                {item.name}
-                                            </p>
-                                            <div style={{ marginLeft: "15px", marginRight: "10px" }}>
-                                                {getCardBody(groupColumn[idx + 1], item.cols)}
-                                            </div>
-                                        </Card.Body>
-                                    </Card>
-                                </div>
-                            </>
+                            <div class={item.colsgroup ? item.colsgroup : "col-12"} key={idx}>
+                                <Card className="card_sale">
+                                    <Card.Body className="card_body_doc">
+                                        <p
+                                            className="text_card_dialog"
+                                            style={{ color: "#7EA8F6", fontSize: "20px" }}
+                                        >
+                                            {item.name}
+                                        </p>
+                                        <div style={{ marginLeft: "15px", marginRight: "10px" }}>
+                                            {getCardBody(groupColumn[idx + 1], item.cols, DialogselectedImage)}
+                                        </div>
+                                    </Card.Body>
+                                </Card>
+                            </div>
                         );
                     })}
                 </div>
             </>
         );
     };
-
     const getTextName = (data, cols, mods) => {
         return (
             <>
                 {" "}
                 {data.map((item, idx) => {
-                    if (cols == "2" && idx % "2" == mods) {
-                        return <p className="text_h_dialog">{item.name} :</p>;
+                    if (cols == "2" && idx % 2 == mods) {
+                        if (item.type === "switch_status") {
+                            return null;
+                        } else {
+                            return <p className="text_h_dialog">{item.name} :</p>;
+                        }
                     } else if (cols != "2") {
-                        return <p className="text_h_dialog">{item.name} :</p>;
+                        if (item.type === "switch_status") {
+                            return null;
+                        } else {
+                            return <p className="text_h_dialog">{item.name} :</p>;
+                        }
                     }
                 })}{" "}
             </>
         );
     };
-
-    const getComponent = (data, cols, mods) => {
+    const getTextStatus = (data, cols, mods) => {
         return (
             <>
                 {" "}
                 {data.map((item, idx) => {
                     if (cols == "2" && idx % 2 == mods) {
-                        return getDialogContent(item.type, item.key, item.validate, item);
+                        if (item.type !== "switch_status") {
+                            return null;
+                        } else {
+                            return <p className="text_h_dialog">{item.name} :</p>;
+                        }
                     } else if (cols != "2") {
-                        return getDialogContent(item.type, item.key, item.validate, item);
+                        if (item.type !== "switch_status") {
+                            return null;
+                        } else {
+                            return <p className="text_h_dialog">{item.name} :</p>;
+                        }
+                    }
+                })}{" "}
+            </>
+        );
+    };
+    const getComponent = (data, cols, mods) => {
+        return (
+            <>
+                {data.map((item, idx) => {
+                    if (cols == "2" && idx % 2 == mods) {
+                        if (item.type === "switch_status") {
+                            return null;
+                        } else {
+                            return getDialogContent(item.type, item.key, item.validate, item);
+                        }
+                    } else if (cols != "2") {
+                        if (item.type === "switch_status") {
+                            return null;
+                        } else {
+                            return getDialogContent(item.type, item.key, item.validate, item);
+                        }
                     }
                 })}
             </>
         );
     };
-    const getDialog = () => {
-
+    const getComponentStatus = (data, cols, mods) => {
         return (
-            <div style={{ borderRadius: "30px" }}>
-                <Dialog open={openDialog} maxWidth={width ? width : "1000px"}>
-                    <DialogTitle style={{ marginLeft: "1%", height: "50px" }}>
-                        <p style={{ marginTop: "1px", marginLeft: "1%", color: "#2F3A9E" }}>
-                            <strong>
-                                {" "}
-                                {dataEdit[keys]
-                                    ? "แก้ไขข้อมูล" + pageName
-                                    : "เพิ่มข้อมูล" + pageName}
-                            </strong>
-                        </p>
-                    </DialogTitle>
-                    <DialogContent
-                        dividers="paper"
-                        style={{ width: width ? width : "1000px" }}
-                    >
-                        {getUploadImage()}
-                        {promoTionMaster ? (
-                            getCardFormPromotions()
-                        ) : groupCard == true ? (
-                            getCardForm()
-                        ) : (
-                            <div class="collumn">
-                                <Card.Body className="card_body_doc" style={{ marginTop: "0px" }}>
-                                    <div class="row">
-                                        <div class="row" style={{ width: "700px" }}>
-                                            <div class={col == "2" ? "col-2" : "col-4"} style={{ paddingRight: 0 }}>
-                                                {getTextName(columnDialog, col, 0)}
-                                            </div>
-                                            <div class={col == "2" ? "col-4" : "col"}>
-                                                {getComponent(columnDialog, col, 0)}
-                                            </div>
-                                            {col == "2" ? (
-                                                <div class="col-2">{getTextName(columnDialog, col, 1)}</div>
-                                            ) : (
-                                                <></>
-                                            )}
-                                            {col == "2" ? (
-                                                <div class="col-5">
-                                                    {getComponent(columnDialog, col, 1)}
-                                                </div>
-                                            ) : (
-                                                <></>
-                                            )}
-                                        </div>
-                                    </div>
-                                </Card.Body>
-                                <Card.Body className="card_body_doc" style={{ marginTop: "20px" }}>
-                                    <div className="column">
-                                        <div className="row">
-                                            <div className="col">
-                                                <div
-                                                    className={`header ${selectedContent === 'detail' ? 'selected' : ''}`}
-                                                    onClick={() => setSelectedContent('detail')}
-                                                >
-                                                    <h5>รายละเอียดสินค้า</h5>
-                                                </div>
-                                                {selectedContent === 'detail' && getContent('detail')}
-                                            </div>
-                                            <div className="col">
-                                                <div
-                                                    className={`header ${selectedContent === 'barcode' ? 'selected' : ''}`}
-                                                    onClick={() => setSelectedContent('barcode')}
-                                                >
-                                                    <h5>บาร์โค้ทสินค้า</h5>
-                                                </div>
-                                                {selectedContent === 'barcode' && getContent('barcode')}
-                                            </div>
-                                            <div className="col">
-                                                <div
-                                                    className={`header ${selectedContent === 'price' ? 'selected' : ''}`}
-                                                    onClick={() => setSelectedContent('price')}
-                                                >
-                                                    <h5>ราคาสินค้า</h5>
-                                                </div>
-                                                {selectedContent === 'price' && getContent('price')}
-                                            </div>
-                                            <div className="col">
-                                                <div
-                                                    className={`header ${selectedContent === 'group' ? 'selected' : ''}`}
-                                                    onClick={() => setSelectedContent('group')}
-                                                >
-                                                    <h5>สินค้าชุด</h5>
-                                                </div>
-                                                {selectedContent === 'group' && getContent('group')}
-                                            </div>
-                                        </div>
-                                        <div style={{ height: '300px' }}>
-                                            {selectedContent && getContent(selectedContent)}
-                                        </div>
-                                    </div>
-                                </Card.Body>
-                            </div>
-                        )}
-                        {customDialog}
-                    </DialogContent>
-                    <DialogActions>
-                        {cancleDoc == true && dataEdit[keys] != undefined ? (
-                            <div style={{ marginRight: "auto" }}>
-                                <BtnCancleDoc onClick={() => onClickCancleDoc()} />
-                            </div>
-                        ) : cancleDoc == "close" ? (
-                            <></>
-                        ) : (
-                            <></>
-                        )}
-                        {closeDoc == true ? (
-                            <div style={{ marginRight: "2%" }}>
-                                <BtnCloseDoc onClick={() => onClickSave()} />
-                            </div>
-                        ) : (
-                            <Btnsubmit onClick={() => onClickSave()} />
-                        )}
-                        <BtnCancel onClick={() => onClose(false)} />
-                    </DialogActions>
-                </Dialog>
-                {getAlert()}
-            </div>
+            <>
+                {data.map((item, idx) => {
+                    if (cols == "2" && idx % 2 == mods) {
+                        if (item.type !== "switch_status") {
+                            return null;
+                        } else {
+                            return getDialogContent(item.type, item.key, item.validate, item);
+                        }
+                    } else if (cols != "2") {
+                        if (item.type !== "switch_status") {
+                            return null;
+                        } else {
+                            return getDialogContent(item.type, item.key, item.validate, item);
+                        }
+                    }
+                })}
+            </>
         );
     };
-
     const onClickAlert = () => {
         onCloseAlert(false);
         alertWarning = false;
         getAlert();
     };
-
     const getAlert = () => {
         return (
             <>
@@ -818,19 +464,15 @@ const DialogMaster = ({
         );
     };
     const [selectedContent, setSelectedContent] = useState('detail');
-
-
-    const getContentPrice = () => {
-        return <>ProductManagement3</>;
-    };
-
-    const getContentGroup = () => {
-        return <>ProductManagement4</>;
-    };
     const getContent = (content) => {
         switch (content) {
             case 'detail':
-                return <ContentDetail />;
+                return (
+                    <ContentDetail
+                        onContentDetailDataChange={setContentDetailData}
+                        keyDetailData={DetailData}
+                    />
+                );
             case 'barcode':
                 return <UseContentBarCode />;
             case 'price':
@@ -857,7 +499,6 @@ const DialogMaster = ({
                 dividers="paper"
                 style={{ width: width ? width : "1000px" }}
             >
-                {getUploadImage()}
                 {promoTionMaster ? (
                     getCardFormPromotions()
                 ) : groupCard == true ? (
@@ -887,7 +528,7 @@ const DialogMaster = ({
                                         </>
                                     )}
                                 </div>
-                                <ProductImageUpload />
+                                <ProductImageUpload changImage={setDialogSelectedImage} keyImage={img} />
                             </div>
                         </Card.Body>
                         <Card.Body className="card_body_doc" style={{ marginTop: "20px" }}>
@@ -919,6 +560,12 @@ const DialogMaster = ({
                 {customDialog}
             </DialogContent>
             <DialogActions>
+                <div class="col" >
+                    <div class="row" style={{ display: "flex" }}>
+                        <div style={{ width : "150px" ,marginLeft :"20px",marginTop:"10px"}}>{getTextStatus(columnDialog, col, 0)}</div>
+                        <div style={{ width : "150px" }}> {getComponentStatus(columnDialog, col, 0)}</div>
+                    </div>
+                </div>
                 {cancleDoc == true && dataEdit[keys] != undefined ? (
                     <div style={{ marginRight: "auto" }}>
                         <BtnCancleDoc onClick={() => onClickCancleDoc()} />

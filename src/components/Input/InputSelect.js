@@ -39,7 +39,7 @@ function InputSelect({ option, onChange, id, id_key, value, disabled, value_key,
                     </select>
                 </FormControl>
             </Box>
-          </>
+        </>
     );
 }
 

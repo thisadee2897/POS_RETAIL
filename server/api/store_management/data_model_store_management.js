@@ -175,8 +175,7 @@ class ModelStoreManagement {
 
     getTypeProductManagement(req, res) {
         const company_id = req.body.company_id;
-        const branch_id = req.body.branch_id;
-        pool.query(`select * from master_data.fn_get_master_product_type(${company_id},${branch_id})`,
+        pool.query(`select * from master_data.fn_get_master_product_type(${company_id})`,
             (err, result) => {
                 if (err) {
                     console.error(err);
@@ -444,7 +443,6 @@ class ModelStoreManagement {
             }
         );
     }
-
     addBrandManagement(req, res) {
         const company_id = req.body.company_id;
         const name = req.body.master_product_brand_name;
@@ -463,7 +461,6 @@ class ModelStoreManagement {
             res.status(200).json(result.rows);
         });
     }
-
     updateBrandManagement(req, res) {
         const name = req.body.master_product_brand_name;
         const active = req.body.master_product_brand_active;
@@ -476,7 +473,7 @@ class ModelStoreManagement {
             master_product_brand_active = $2
             WHERE
             master_product_brand_id = $3;`,
-            [name ,active,brand_id],
+            [name, active, brand_id],
             (err, result) => {
                 if (err) {
                     console.error(err);
@@ -484,6 +481,185 @@ class ModelStoreManagement {
                 } else {
                     res.json({ message: 1 });
                 }
+            }
+        );
+    }
+
+
+
+    getProductManagement(req, res) {
+        const company_id = req.body.company_id;
+        pool.query(`SELECT * FROM master_data.fn_get_product(${company_id})`,
+            (err, result) => {
+                if (err) {
+                    console.error(err);
+                    res.status(500).json(err);
+                    throw err;
+                }
+                res.status(200).json(result.rows);
+            }
+        );
+    }
+    addProductManagement(req, res) {
+        const company_id = req.body.master_company_id;
+        const code = req.body.master_product_code;
+        const TH = req.body.master_product_name;
+        const EN = req.body.master_product_name_eng;
+        const bill = req.body.master_product_name_bill;
+        const remark = req.body.master_product_remark;
+        const sael_active = req.body.sale_activeflag;
+        const unit = req.body.master_product_unit_id;
+        const image = req.body.master_product_image_name;
+        const category = req.body.master_product_category_id;
+        const vat_buy = req.body.master_vat_group_id;
+        const type = req.body.master_product_type_id;
+        const group = req.body.master_product_group_id;
+        const vat_sale = req.body.master_vat_purchase_group_id;
+        const sell_active = req.body.master_product_sell_active;
+        const purchase_active = req.body.master_product_purchase_active;
+        console.log(req.body);
+        const query = {
+            text: 'SELECT master_data.fn_add_product($1, $2, $3, $4, $5,$6, $7, $8, $9, $10,$11,$12,$13,$14,$15,$16)',
+            values: [company_id,
+                code,
+                TH,
+                EN,
+                bill,
+                remark,
+                sael_active,
+                unit,
+                image,
+                category,
+                vat_buy,
+                type,
+                group,
+                vat_sale,
+                sell_active,
+                purchase_active,
+            ],
+        };
+        pool.query(query, (err, result) => {
+            if (err) {
+                console.error(err);
+                res.status(500).json(err);
+                throw err;
+            }
+            res.status(200).json(result.rows);
+        });
+    }
+    updateBrandManagement(req, res) {
+        const {
+            master_company_id: company_id,
+            master_product_code: code,
+            master_product_name: TH,
+            master_product_name_eng: EN,
+            master_product_name_bill: bill,
+            master_product_remark: remark,
+            master_product_unit_id: unit,
+            master_product_image_name: image,
+            master_product_category_id: category,
+            master_vat_group_id: vat_buy,
+            master_product_type_id: type,
+            master_product_group_id: group,
+            master_vat_purchase_group_id: vat_sale,
+        } = req.body;
+        const query = {
+            text: `UPDATE master_data.master_product
+                    SET master_product_code = $2,
+                    master_product_name = $3,
+                    master_product_name_eng = $4,
+                    master_product_name_bill = $5,
+                    master_product_remark = $6,
+                    master_product_unit_id = $7,
+                    master_product_image_name:$8,
+                    master_product_category_id = $9,
+                    master_vat_group_id = $10,
+                    master_product_type_id = $11,
+                    master_product_group_id = $12,
+                    master_vat_purchase_group_id = $13
+                    WHERE master_company_id = $1`,
+            values: [company_id, code, TH, EN, bill, remark, unit, image, category, vat_buy, type, group, vat_sale],
+        };
+        pool.query(query, (err, result) => {
+            if (err) {
+                console.error(err);
+                res.status(500).json(err);
+                throw err;
+            }
+            res.status(200).json(result.rows);
+        });
+    }
+
+    getProductData(req, res) {
+        // const company_id = req.body.company_id;
+        // pool.query(`SELECT * FROM master_data.fn_get_product_data(${company_id})`,
+        //     (err, result) => {
+        //         if (err) {
+        //             console.error(err);
+        //             res.status(500).json(err);
+        //             throw err;
+        //         }
+        //         res.status(200).json(result.rows);
+        //         console.log(result.rows)
+        //     }
+        // );
+    }
+    getCategoryProductManagementActive(req, res) {
+        const company_id = req.body.company_id;
+        pool.query(`SELECT * FROM master_data.fn_get_category_product_management_active(${company_id})`,
+            (err, result) => {
+                if (err) {
+                    console.error(err);
+                    res.status(500).json(err);
+                    throw err;
+                }
+                res.status(200).json(result.rows);
+            }
+        );
+    }
+    getProductGroupActive(req, res) {
+        const company_id = req.body.company_id;
+        const category_id = req.body.category_id;
+        const companyId = company_id === "" ? null : parseInt(company_id);
+        const categoryId = category_id === "" ? null : parseInt(category_id);
+        console.log(categoryId);
+        pool.query(
+            `SELECT * FROM master_data.fn_get_product_group_active($1, $2)`,
+            [companyId, categoryId],
+            (err, result) => {
+                if (err) {
+                    console.error(err);
+                    res.status(500).json(err);
+                    throw err;
+                }
+                res.status(200).json(result.rows);
+            }
+        );
+    }
+
+
+    getBrand(req, res) {
+        const company_id = req.body.company_id;
+        pool.query(`SELECT * FROM master_data.fn_get_master_product_brand(${company_id})`,
+            (err, result) => {
+                if (err) {
+                    console.error(err);
+                    res.status(500).json(err);
+                    throw err;
+                }
+                res.status(200).json(result.rows);
+            }
+        );
+    }
+    getVatGroup(req, res) {
+        pool.query(`SELECT * FROM master_data.fn_get_vat_group()`,
+            (err, result) => {
+                if (err) {
+                    console.error(err);
+                    res.status(500).json(err);
+                    throw err;
+                }
+                res.status(200).json(result.rows);
             }
         );
     }
