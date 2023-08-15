@@ -52,7 +52,7 @@
     text-align: center;
     color: black;
 }
- 
+
 .text_ts_w {
     font-size: 0.7vw;
     text-align: center;
@@ -116,4 +116,7 @@
     font-weight: normal;
     padding-right: 2px;
 
+}
+.dropdown-checkbox input {
+    pointer-events: auto;
 }

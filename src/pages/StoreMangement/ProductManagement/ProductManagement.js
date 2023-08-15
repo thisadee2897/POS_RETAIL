@@ -143,7 +143,7 @@ const ProductManagement = () => {
             ...Image,
             ...Detail,
         };
-        console.log(Data)
+        // console.log(Data)
         // console.log(data)
         // console.log(Image)
         // console.log(Detail)
@@ -207,16 +207,38 @@ const ProductManagement = () => {
 
     const Detail = {
         master_product_category_id: "",
-        master_product_group_id:"",
+        master_product_group_id: "",
         master_product_type_id: "",
-        master_product_brand_id:"",
+        master_product_brand_id: "",
         master_vat_purchase_group_id: "",
         master_vat_group_id: "",
-        master_product_sell_active:"",
-        master_product_purchase_active :"",
+        master_product_sell_active: "",
+        master_product_purchase_active: "",
     };
+    const Barcode = {
+        master_product_id: "",
+        barcode: "",
+        master_product_barcode_unitrate: "",
+        master_product_barcode_unitid: "",
+        master_product_barcode_billname: "",
+        master_product_barcode_listno: "",
+        master_company_id: "",
+        master_product_barcode_activeflag: "",//สถานะการใช้งานในหน่วยนับการขาย
+        master_warehouse_type_id: "", //master_data.master_warehouse_type ประเภทคลัง
+    };
+    const Prices = {
+        master_branch_id: "",
+        master_product_barcode_id: "",
+        master_product_unit_id: "",
+        master_product_price1: "",
+        master_product_price2: "",
+        master_product_price3: "",
+        master_product_price4: "",
+        master_product_price5: "",
+    };
+    const Packs = {};
     const Images = { master_product_image_name: "" };
-    const Status ={sale_activeflag : ""}
+    const Status = { sale_activeflag: "" }
     const getDialog = () => {
         return (
             <DialogMaster
@@ -227,9 +249,12 @@ const ProductManagement = () => {
                 img={Images}
                 status={Status}
                 DetailData={Detail}
+                BarCodeData={Barcode}
+                PriceData={Prices}
+                PackData={Packs}
                 dataAdd={dataAdd}
                 dataEdit={dataEdit}
-                onChangeDialog={(data, Image, Detail) => onClickSave(data, Image, Detail)}
+                onChangeDialog={(data, Image, Detail, Barcode, Prices, Packs) => onClickSave(data, Image, Detail, Barcode, Prices, Packs)}
             />)
     }
     const onChangeFilterTable = (e) => {

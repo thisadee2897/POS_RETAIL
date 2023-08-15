@@ -23,12 +23,11 @@
   border-radius: 10px;
   border: 0px solid white;
   outline: none;
-  background-color: #dbe5fc;
+  background-color: #ffffff;
   padding-left: 6px;
 }
 
 .submit-button {
-  /* ปรับแต่งสไตล์ของปุ่ม Submit ตามที่คุณต้องการ */
   background-color: #ffffff;
   width: 110px;
   color: #7198ef;
@@ -42,14 +41,37 @@
   margin-top: 6px;
   margin-left: 10px;
 }
+.submit-button2 {
+  background-color: #ffffff;
+  width: 205px;
+  color: #7198ef;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 2px solid #7198ef;
+  height: 30px;
+  text-align: center;
+  margin-top: 6px;
+  margin-left: 10px;
+}
 
 .submit-button:hover {
-  /* ปรับแต่งสไตล์เมื่อเมาส์ชี้ไปที่ปุ่ม Submit */
   background-color: #98b9ff;
   color: #ffffff;
   border: 2px solid #98b9ff;
 }
 .submit-button-container {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+}
+.submit-button2:hover {
+  background-color: #98b9ff;
+  color: #ffffff;
+  border: 2px solid #98b9ff;
+}
+.submit-button2-container {
   display: flex;
   justify-content: flex-end;
   padding-bottom: 10px;

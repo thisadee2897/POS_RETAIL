@@ -1,19 +1,27 @@
-﻿import { React, useState, useEffect, useContext } from "react";
+﻿import { React, useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 function InputSelect({ option, onChange, id, id_key, value, disabled, value_key, style, defaultValue, className }) {
     const dataoptions = option;
+    const [hasSelectedValue, setHasSelectedValue] = useState(false);
+
+    useEffect(() => {
+        if (value !== undefined || defaultValue !== undefined) {
+            setHasSelectedValue(true);
+        } else {
+            setHasSelectedValue(false);
+        }
+    }, [value, defaultValue]);
+
     return (
         <>
             <Box sx={{ minWidth: 120 }}>
                 <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label"></InputLabel>
                     <select
-                        className="input-select"
+                        className={`input-select ${!hasSelectedValue ? "input-select-gray" : ""}`} // เพิ่มคลาส CSS เมื่อไม่มีค่าที่ถูกเลือก
                         label={false}
                         style={style}
                         size="small"

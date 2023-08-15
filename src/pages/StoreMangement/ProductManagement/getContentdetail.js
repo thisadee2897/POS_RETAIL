@@ -57,24 +57,28 @@ const IOSSwitch = styled((props) => (
         }),
     },
 }));
-const ContentDetail = ({ onContentDetailDataChange, keyDetailData }) => {
+const ContentDetail = ({ onContentDetailDataChange, keyDetailData, setdataDetail, dataDetail }) => {
     const userData = useContext(DataContext);
     const BranchData = useContext(DataContextBranchData);
     const [companyId] = useState(userData[0].master_company_id)
     const [branchId] = useState(parseInt(BranchData[0].master_branch_id))
-    const [brand, setProductBrand] = useState('');
-    const [category, setCategory] = useState('');
-    const [vatBuy, setProductVatBuy] = useState('');
-    const [type, setProductType] = useState('');
-    const [group, setProductGroup] = useState('');
-    const [vatSale, setProductVatSale] = useState('');
+    const [brand, setProductBrand] = useState(keyDetailData.master_product_brand_id);
+    const [category, setCategory] = useState(keyDetailData.master_product_category_id);
+    const [vatBuy, setProductVatBuy] = useState(keyDetailData.master_vat_purchase_group_id);
+    const [type, setProductType] = useState(keyDetailData.master_product_type_id);
+    const [group, setProductGroup] = useState(keyDetailData.master_product_group_id);
+    const [vatSale, setProductVatSale] = useState(keyDetailData.master_vat_group_id);
     const [getCategory, setGetCategory] = useState([]);
     const [getGroup, setGetGroup] = useState([]);
     const [getType, setGetType] = useState([]);
     const [getBrand, setGetBrand] = useState([]);
     const [getVat, setGetVat] = useState([]);
-    const [isSellEnabled, setIsSellEnabled] = useState(true);
-    const [isPurchaseEnabled, setIsPurchaseEnabled] = useState(true);
+    const [isSellEnabled, setIsSellEnabled] = useState(dataDetail.master_product_sell_active);
+    const [isPurchaseEnabled, setIsPurchaseEnabled] = useState(dataDetail.master_product_purchase_active);
+    useEffect(() => {
+        handleDropdownChange();
+        console.log(dataDetail)
+    }, [category, group, type, brand, vatBuy, vatSale, dataDetail, isSellEnabled, isPurchaseEnabled]);
     const handleSwitchChange = (event) => {
         const { name, checked } = event.target;
         if (name === "isSellEnabled") {
@@ -93,6 +97,7 @@ const ContentDetail = ({ onContentDetailDataChange, keyDetailData }) => {
         keyDetailData.master_product_sell_active = isSellEnabled
         keyDetailData.master_product_purchase_active = isPurchaseEnabled
         onContentDetailDataChange(keyDetailData);
+        setdataDetail(keyDetailData);
     };
     useEffect(() => {
         const fetchData = async () => {
@@ -119,20 +124,21 @@ const ContentDetail = ({ onContentDetailDataChange, keyDetailData }) => {
         };
         fetchData();
     }, [category]);
-    useEffect(() => {
-        handleDropdownChange();
-    }, [category, group, type, brand, vatBuy, vatSale]);
+
     return (
         <div className="row" style={{ marginTop: "20px" }}>
             <div className="col" style={{ marginRight: "20px", marginLeft: "20px" }}>
-                <div className='row' style={{ alignItems: 'center' }}>
-                    <p className="text_h_dialog" style={{ width: "30%" }}>{"หมวดสินค้า"} :</p>
+                <div className='row' style={{ alignItems: 'center'}}>
+                    <p className="text_h_dialog" style={{ width: "30%" ,marginTop:"12px" }}>{"หมวดสินค้า"} :</p>
                     <select
                         className="input_dialog"
                         style={{ width: "60%", marginTop: "0px" }}
                         value={category}
                         onChange={(e) => {
                             setCategory(e.target.value);
+                            if (e.target.value !== category) {
+                                setProductGroup("");
+                            }
                             handleDropdownChange();
                         }}
                     >
@@ -146,8 +152,8 @@ const ContentDetail = ({ onContentDetailDataChange, keyDetailData }) => {
                         ))}
                     </select>
                 </div>
-                <div className='row'>
-                    <p className="text_h_dialog" style={{ width: "30%" }}>{"กลุ่มสินค้า"} :</p>
+                <div className='row' style={{ alignItems: 'center'}}>
+                    <p className="text_h_dialog" style={{ width: "30%",marginTop:"12px" }}>{"กลุ่มสินค้า"} :</p>
                     <select
                         className="input_dialog"
                         style={{ width: "60%", marginTop: "0px" }}
@@ -166,8 +172,8 @@ const ContentDetail = ({ onContentDetailDataChange, keyDetailData }) => {
                         ))}
                     </select>
                 </div>
-                <div className='row'>
-                    <p className="text_h_dialog" style={{ width: "30%" }}>{"ประเภทสินค้า"} :</p>
+                <div className='row' style={{ alignItems: 'center',marginBottom:"10px" }}>
+                    <p className="text_h_dialog" style={{ width: "30%",marginTop:"12px"  }}>{"ประเภทสินค้า"} :</p>
                     <select
                         className="input_dialog"
                         style={{ width: "60%", marginTop: "0px" }}
@@ -189,8 +195,8 @@ const ContentDetail = ({ onContentDetailDataChange, keyDetailData }) => {
                 </div>
             </div>
             <div className="col" style={{ marginRight: "20px" }}>
-                <div className='row'>
-                    <p className="text_h_dialog" style={{ width: "30%" }}>{"ยี่ห้อสินค้า"} :</p>
+                <div className='row' style={{ alignItems: 'center'}}>
+                    <p className="text_h_dialog" style={{ width: "30%" ,marginTop:"12px" }}>{"ยี่ห้อสินค้า"} :</p>
                     <select
                         className="input_dialog"
                         style={{ width: "60%", marginTop: "0px" }}
@@ -210,8 +216,8 @@ const ContentDetail = ({ onContentDetailDataChange, keyDetailData }) => {
                         })}
                     </select>
                 </div>
-                <div className='row'>
-                    <p className="text_h_dialog" style={{ width: "30%" }}>{"กลุ่มภาษีซื้อ"} :</p>
+                <div className='row' style={{ alignItems: 'center' }}>
+                    <p className="text_h_dialog" style={{ width: "30%",marginTop:"12px"  }}>{"กลุ่มภาษีซื้อ"} :</p>
                     <select
                         className="input_dialog"
                         style={{ width: "60%", marginTop: "0px" }}
@@ -231,12 +237,12 @@ const ContentDetail = ({ onContentDetailDataChange, keyDetailData }) => {
                         })}
                     </select>
                 </div>
-                <div className='row'>
-                    <p className="text_h_dialog" style={{ width: "30%" }}>{"กลุ่มภาษีขาย"} :</p>
+                <div className='row' style={{ alignItems: 'center'}}>
+                    <p className="text_h_dialog" style={{ width: "30%",marginTop:"12px"  }}>{"กลุ่มภาษีขาย"} :</p>
                     <select
                         className="input_dialog"
                         style={{ width: "60%", marginTop: "0px" }}
-                        value={vatSale}
+                        value={vatSale}s
                         onChange={(e) => {
                             setProductVatSale(e.target.value);
                             handleDropdownChange();
@@ -252,7 +258,7 @@ const ContentDetail = ({ onContentDetailDataChange, keyDetailData }) => {
                         })}
                     </select>
                 </div>
-                <div class="col" style={{  flexDirection: "column" , marginTop: "10px"}}>
+                <div class="col" style={{ flexDirection: "column", marginTop: "10px" }}>
                     <FormControlLabel
                         control={
                             <IOSSwitch
@@ -262,7 +268,7 @@ const ContentDetail = ({ onContentDetailDataChange, keyDetailData }) => {
                             />
                         }
                         label="เปิดให้ขาย"
-                        style={{ paddingLeft: "10px",marginTop: "10px" }}
+                        style={{ paddingLeft: "10px", marginTop: "10px" }}
                     />
                     <FormControlLabel
                         control={
@@ -273,7 +279,7 @@ const ContentDetail = ({ onContentDetailDataChange, keyDetailData }) => {
                             />
                         }
                         label="เปิดให้ซื้อ"
-                        style={{paddingLeft: "50px", marginTop: "10px" }}
+                        style={{ paddingLeft: "50px", marginTop: "10px" }}
                     />
                 </div>
             </div>

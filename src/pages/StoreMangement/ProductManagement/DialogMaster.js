@@ -23,6 +23,7 @@ import Select from "../../../components/Input/InputSelect";
 import DataContextMenuActions from "../../../DataContext/DataContextMenuActions";
 import Card from "react-bootstrap/Card";
 import AlertWarning from "../../../components/Alert/AlertWarning";
+import { KeySharp } from '@mui/icons-material';
 
 const DialogMaster = ({
     openDialog,
@@ -47,7 +48,7 @@ const DialogMaster = ({
     customBtnTB,
     img,
     DetailData,
-    status
+    BarCodeData,
 }) => {
     const actions = useContext(DataContextMenuActions);
     const [textValidate, setTextValidate] = useState({});
@@ -55,15 +56,23 @@ const DialogMaster = ({
     const [pageName, setPageName] = useState("");
     const [DialogselectedImage, setDialogSelectedImage] = useState("");
     const [Detail, setContentDetailData] = useState("");
+    const [BarCode, setContentBarCodeData] = useState("");
+    const [Product, setProduct] = useState("")
+    const [dataDetail, setdataDetail] = useState([]);
+    const [dataBarCode, setdataBarCode] = useState([]);
+    const [dataPrices, setDataPrices] = useState([]);
+    const [dataProductSet, setDataProductSet] = useState([]);
     useEffect(() => {
         if (actions) {
             let name = actions.length > 0 ? actions[0]["menuName"] : "";
             setPageName(name);
         }
     }, [actions]);
-
     useEffect(() => {
-    }, [valueDialog, columnDialog, DialogselectedImage, Detail]);
+        onChangeInputSwitch()
+    }, [valueDialog, columnDialog, DialogselectedImage, Detail, BarCode]);
+    useEffect(() => {
+    }, [Product,dataDetail]);
 
     useEffect(() => {
         if (textValidates && textValidates.key) {
@@ -75,16 +84,24 @@ const DialogMaster = ({
         setTextValidate({});
         if (dataEdit[keys] != undefined) {
             dataEdit[key] = e.target.value;
+            setProduct(dataEdit)
         } else {
             dataAdd[key] = e.target.value;
+            if (dataAdd[key] !== undefined) {
+                setProduct(dataAdd)
+            }
         }
     };
     const onChangeInputSwitch = (e, key) => {
-        setTextValidate({});
         if (dataEdit[keys] != undefined) {
             dataEdit[key] = e;
-        } else {
+            setProduct(dataEdit)
+        } else if (key === "sale_activeflag") {
             dataAdd[key] = e;
+            setProduct(dataAdd)
+        } else {
+            dataAdd["sale_activeflag"] = true;
+            setProduct(dataAdd)
         }
     };
     const onClickSelect = (e, key, item) => {
@@ -105,9 +122,11 @@ const DialogMaster = ({
                         if (dataEdit[keys] != undefined) {
                             dataEdit[key] = e.target.value;
                             dataEdit[item.release] = its[item.release];
+                            setProduct(dataEdit)
                         } else {
                             dataAdd[key] = e.target.value;
                             dataAdd[item.release] = its[item.release];
+                            setProduct(dataAdd)
                         }
                     }
                 }
@@ -115,8 +134,10 @@ const DialogMaster = ({
         } else {
             if (dataEdit[keys] != undefined) {
                 dataEdit[key] = e.target.value != 0 ? parseInt(e.target.value) : "";
+                setProduct(dataEdit)
             } else {
                 dataAdd[key] = e.target.value != 0 ? parseInt(e.target.value) : "";
+                setProduct(dataAdd)
             }
         }
     };
@@ -471,14 +492,33 @@ const DialogMaster = ({
                     <ContentDetail
                         onContentDetailDataChange={setContentDetailData}
                         keyDetailData={DetailData}
+                        setdataDetail={setdataDetail}
+                        dataDetail={dataDetail}
                     />
                 );
             case 'barcode':
-                return <UseContentBarCode />;
+                return <UseContentBarCode
+                    onContentBarCodeDataChange={setContentBarCodeData}
+                    keyBarCodeData={BarCodeData}
+                    setDataBarCode={setdataBarCode}
+                    dataBarCode={dataBarCode}
+                    DataProuct={Product}
+                    DataDetail={dataDetail}
+                />;
             case 'price':
-                return <ContentPrice />;
+                return <ContentPrice
+                    setDataPrices={setDataPrices}
+                    dataPrices={dataPrices}
+                    DataProuct={Product}
+                    dataBarCode={dataBarCode}
+                />;
             case 'group':
-                return <ContentGroup />;
+                return <ContentGroup
+                    // onContentBarCodeDataChange={setContentBarCodeData}
+                    // keyBarCodeData={BarCodeData}
+                    setDataProductSet={setDataProductSet}
+                    dataProductSet={dataProductSet}
+                />;
             default:
                 return null;
         }
@@ -540,7 +580,7 @@ const DialogMaster = ({
                                                 className={`header ${selectedContent === content ? 'selected' : ''}`}
                                                 onClick={() => setSelectedContent(content)}
                                             >
-                                                <h5 style={{ margin: '0 auto', fontWeight: 'lighter' }}>
+                                                <h5 style={{ margin: '0 auto', fontWeight: 'lighter' ,fontSize:"18px"}}>
                                                     {content === 'detail' && 'รายละเอียดสินค้า'}
                                                     {content === 'barcode' && 'บาร์โค้ทสินค้า'}
                                                     {content === 'price' && 'ราคาสินค้า'}
@@ -562,8 +602,8 @@ const DialogMaster = ({
             <DialogActions>
                 <div class="col" >
                     <div class="row" style={{ display: "flex" }}>
-                        <div style={{ width : "150px" ,marginLeft :"20px",marginTop:"10px"}}>{getTextStatus(columnDialog, col, 0)}</div>
-                        <div style={{ width : "150px" }}> {getComponentStatus(columnDialog, col, 0)}</div>
+                        <div style={{ width: "150px", marginLeft: "20px", marginTop: "10px" }}>{getTextStatus(columnDialog, col, 0)}</div>
+                        <div style={{ width: "150px" }}> {getComponentStatus(columnDialog, col, 0)}</div>
                     </div>
                 </div>
                 {cancleDoc == true && dataEdit[keys] != undefined ? (
@@ -582,7 +622,8 @@ const DialogMaster = ({
                 ) : (
                     <Btnsubmit onClick={() => onClickSave()} />
                 )}
-                <BtnCancel onClick={() => onClose(false)} />
+                <BtnCancel onClick={
+                    () => onClose(false)} />
             </DialogActions>
         </Dialog>
         {getAlert()}
